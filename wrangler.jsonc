@@ -4,7 +4,7 @@
   // the generated snapshot at .wrangler/deploy/config.json → dist/ssr/wrangler.json.
   // Cloudflare Workers Builds: set Build command to "bun run build" OR set Deploy command to
   // "bun run deploy" / "node scripts/deploy-cloudflare.mjs". Do NOT use "npx wrangler deploy" alone.
-  "name": "argon-web-cursor",
+  "name": "argon-red-spark",
   "compatibility_date": "2025-09-24",
   "compatibility_flags": ["nodejs_compat"],
   "main": "src/server.ts"
