@@ -4,7 +4,7 @@ import { PageShell } from "../components/site-chrome";
 
 const SITE_URL = "https://argonaddon.com";
 const DOWNLOAD_URL =
-  "https://github.com/https00780-cloud/argonnn/raw/refs/heads/main/Argon%201.21.11.jar";
+  "https://github.com/https00780-cloud/argonnn/raw/refs/heads/main/Argon%20Addon%201.21.11.jar";
 
 export const Route = createFileRoute("/install")({
   component: InstallPage,
