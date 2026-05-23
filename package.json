@@ -11,7 +11,8 @@
     "build": "vite build",
     "build:dev": "vite build --mode development",
     "preview": "vite build && vite preview",
-    "deploy": "vite build && wrangler deploy",
+    "deploy": "node scripts/cf-wrangler.mjs deploy",
+    "postinstall": "node scripts/patch-wrangler-deploy.mjs",
     "lint": "eslint .",
     "format": "prettier --write ."
   },
