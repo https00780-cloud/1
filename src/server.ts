@@ -2,6 +2,7 @@ import "./lib/error-capture";
 
 import { consumeLastCapturedError } from "./lib/error-capture";
 import { DownloadCounter } from "./download-counter-do";
+import { notifyDiscordDownload } from "./lib/discord-download-notify";
 import { getDownloadCount, recordDownload } from "./lib/download-stats";
 import { renderErrorPage } from "./lib/error-page";
 import { DOWNLOAD_URL } from "./lib/site";
@@ -10,7 +11,10 @@ export { DownloadCounter };
 
 interface Env {
   DOWNLOAD_COUNTER?: DurableObjectNamespace;
+  DISCORD_DOWNLOAD_WEBHOOK_URL?: string;
 }
+
+type WorkerContext = { waitUntil(promise: Promise<unknown>): void };
 
 type ServerEntry = {
   fetch: (request: Request, env: unknown, ctx: unknown) => Promise<Response> | Response;
@@ -75,7 +79,11 @@ async function normalizeCatastrophicSsrResponse(response: Response): Promise<Res
   return brandedErrorResponse();
 }
 
-async function handleDownloadRoutes(request: Request, env: Env): Promise<Response | null> {
+async function handleDownloadRoutes(
+  request: Request,
+  env: Env,
+  ctx: unknown,
+): Promise<Response | null> {
   const url = new URL(request.url);
 
   if (url.pathname === "/api/downloads" && request.method === "GET") {
@@ -92,7 +100,13 @@ async function handleDownloadRoutes(request: Request, env: Env): Promise<Respons
   }
 
   if (url.pathname === "/download" && request.method === "GET") {
-    await recordDownload(env.DOWNLOAD_COUNTER);
+    const count = await recordDownload(env.DOWNLOAD_COUNTER);
+    const notify = notifyDiscordDownload(env.DISCORD_DOWNLOAD_WEBHOOK_URL, count, request);
+    if (ctx && typeof (ctx as WorkerContext).waitUntil === "function") {
+      (ctx as WorkerContext).waitUntil(notify);
+    } else {
+      void notify;
+    }
     return Response.redirect(DOWNLOAD_URL, 302);
   }
 
@@ -102,7 +116,7 @@ async function handleDownloadRoutes(request: Request, env: Env): Promise<Respons
 export default {
   async fetch(request: Request, env: Env, ctx: unknown) {
     try {
-      const downloadResponse = await handleDownloadRoutes(request, env);
+      const downloadResponse = await handleDownloadRoutes(request, env, ctx);
       if (downloadResponse) return downloadResponse;
 
       const handler = await getServerEntry();

@@ -44,3 +44,17 @@ bunx wrangler dev
 ```
 
 Plain `vite dev` without Wrangler will not bind `DOWNLOAD_COUNTER`; the site still works, but `/api/downloads` returns `0` until deployed.
+
+## Discord download notifications
+
+Each hit on `/download` can post to a Discord webhook (non-blocking, via `waitUntil`).
+
+**Production** — set the webhook URL as a Worker secret (do not commit it):
+
+```bash
+bunx wrangler secret put DISCORD_DOWNLOAD_WEBHOOK_URL
+```
+
+Paste your full Discord webhook URL when prompted, then redeploy.
+
+**Local** — copy `.dev.vars.example` to `.dev.vars` and set `DISCORD_DOWNLOAD_WEBHOOK_URL`, then run `bunx wrangler dev`.
