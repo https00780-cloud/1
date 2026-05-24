@@ -58,3 +58,21 @@ bunx wrangler secret put DISCORD_DOWNLOAD_WEBHOOK_URL
 Paste your full Discord webhook URL when prompted, then redeploy.
 
 **Local** — copy `.dev.vars.example` to `.dev.vars` and set `DISCORD_DOWNLOAD_WEBHOOK_URL`, then run `bunx wrangler dev`.
+
+## GitHub Actions (recommended)
+
+Push to `main` triggers `.github/workflows/deploy.yml` when these **repository secrets** are set:
+
+| Secret | Where to get it |
+|--------|-----------------|
+| `CLOUDFLARE_API_TOKEN` | [Cloudflare API tokens](https://dash.cloudflare.com/profile/api-tokens) → **Edit Cloudflare Workers** template |
+| `CLOUDFLARE_ACCOUNT_ID` | Cloudflare dashboard → Workers → right sidebar **Account ID** |
+| `DISCORD_DOWNLOAD_WEBHOOK_URL` | Your Discord channel webhook URL |
+
+One-shot setup from this machine (opens browser for GitHub login):
+
+```powershell
+powershell -ExecutionPolicy Bypass -File scripts/setup-and-push.ps1
+```
+
+The script reads `DISCORD_DOWNLOAD_WEBHOOK_URL` from `.dev.vars`, sets GitHub secrets, and pushes `main`.
