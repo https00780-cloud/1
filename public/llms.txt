@@ -1,0 +1,22 @@
+# Argon Addon — https://argonaddon.com
+
+> Free Meteor Client addon for Minecraft Java 1.21.11 and DonutSMP. Ships the only working public DonutSMP fly bypass, 90+ modules, and a direct .jar download.
+
+## Primary pages
+
+- Home / download: https://argonaddon.com/
+- Install guide: https://argonaddon.com/install
+- DonutSMP fly bypass: https://argonaddon.com/donutsmp-fly-bypass
+- DonutSMP guide: https://argonaddon.com/donutsmp-guide
+- Module list: https://argonaddon.com/modules
+- Blog: https://argonaddon.com/posts
+
+## Target topics
+
+argon addon, argon addon download, argon addon donutsmp, best addon donut smp, meteor client addons donutsmp, donutsmp fly bypass, ah sniper, base finder, crystal pvp
+
+## Download
+
+Tracked download URL (increments counter, redirects to GitHub .jar): https://argonaddon.com/download
+
+File: Argon Addon 1.21.11.jar · Fabric 1.21.11 · requires Meteor Client

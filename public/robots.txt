@@ -5,4 +5,5 @@ Allow: /
 Disallow: /_og-card.html
 
 Sitemap: https://argonaddon.com/sitemap.xml
-Host: https://argonaddon.com
+
+# LLM / AI crawlers — site summary at /llms.txt

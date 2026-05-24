@@ -3,18 +3,24 @@ import { Download } from "lucide-react";
 import type { ReactNode } from "react";
 
 const ArgonLogo = () => (
-  <div className="flex items-center gap-2.5">
-    <div className="flex h-9 w-9 items-center justify-center rounded-lg bg-gradient-brand font-mono text-sm font-bold text-primary-foreground shadow-glow ring-1 ring-primary/60">
+  <div className="flex items-center gap-2.5" aria-label="Argon Addon — Meteor Client addon for DonutSMP">
+    <div
+      className="flex h-9 w-9 items-center justify-center rounded-lg bg-gradient-brand font-mono text-sm font-bold text-primary-foreground shadow-glow ring-1 ring-primary/60"
+      aria-hidden
+    >
       AR
     </div>
-    <span className="text-lg font-semibold tracking-tight">Argon</span>
+    <span className="text-lg font-semibold tracking-tight">Argon Addon</span>
   </div>
 );
 
 export function SiteNav() {
   return (
     <header className="fixed left-0 right-0 top-4 z-50 px-4">
-      <nav className="mx-auto flex max-w-6xl items-center justify-between rounded-full border border-border bg-card/70 px-5 py-2.5 backdrop-blur-xl">
+      <nav
+        className="mx-auto flex max-w-6xl items-center justify-between rounded-full border border-border bg-card/70 px-5 py-2.5 backdrop-blur-xl"
+        aria-label="Main navigation"
+      >
         <Link to="/" className="contents" data-testid="nav-home-link">
           <ArgonLogo />
         </Link>
@@ -78,9 +84,14 @@ export function SiteFooter() {
         <div className="flex max-w-md flex-col gap-3">
           <ArgonLogo />
           <p className="text-xs leading-relaxed text-muted-foreground">
-            Argon Addon is a community Meteor Client addon for DonutSMP and Minecraft 1.21.11. The
-            only public addon with a working DonutSMP fly bypass. Not affiliated with Mojang,
-            Microsoft, Meteor Development, or DonutSMP.
+            <strong className="font-medium text-foreground">Argon Addon</strong> is the free{" "}
+            <strong className="font-medium text-foreground">argon addon download</strong> for
+            DonutSMP — a Meteor Client addon for Minecraft 1.21.11 with the only public{" "}
+            <strong className="font-medium text-foreground">DonutSMP fly bypass</strong>, AH sniper,
+            and base-finder stack. Often ranked among the{" "}
+            <strong className="font-medium text-foreground">best meteor client addons donutsmp</strong>{" "}
+            players still use in 2026. Not affiliated with Mojang, Microsoft, Meteor Development, or
+            DonutSMP.
           </p>
         </div>
         <div className="grid grid-cols-2 gap-x-10 gap-y-2 text-sm text-muted-foreground md:grid-cols-3">

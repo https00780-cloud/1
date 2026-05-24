@@ -27,6 +27,15 @@ import {
 } from "lucide-react";
 import { SiteFooter, SiteNav } from "../components/site-chrome";
 import { DownloadCountBadge, DownloadCountLine } from "../components/download-count";
+import {
+  breadcrumbSchema,
+  faqSchema,
+  jsonLdScript,
+  pageHead,
+  siteNavigationSchema,
+  softwareApplicationSchema,
+  webPageSchema,
+} from "../lib/seo";
 import { SITE_URL, TRACKED_DOWNLOAD_URL } from "../lib/site";
 
 const faqsForSeo: Array<[string, string]> = [
@@ -56,103 +65,37 @@ const faqsForSeo: Array<[string, string]> = [
   ],
 ];
 
+const HOME_TITLE = "Argon Addon Download — Best Meteor Client Addon for DonutSMP (Free .jar)";
+const HOME_DESC =
+  "Argon Addon download for DonutSMP — the only Meteor Client addon with a working fly bypass. Best addon donut smp pick for AH sniping, base finding & Crystal PvP. Free .jar for Minecraft 1.21.11.";
+
 export const Route = createFileRoute("/")({
   component: Index,
-  head: () => ({
-    meta: [
-      {
-        title: "Argon Addon — Best Meteor Client Addon for DonutSMP (Free Download)",
-      },
-      {
-        name: "description",
-        content:
-          "Argon Addon download — the only Meteor Client addon with a working fly bypass on DonutSMP. 90+ modules for Crystal PvP, base finding, AH sniping. Free .jar for Minecraft 1.21.11.",
-      },
-      {
-        name: "keywords",
-        content:
-          "argon addon, argon addon download, argon addon donutsmp, best addon donut smp, meteor client addons donutsmp, donutsmp fly bypass, meteor client donutsmp, argon meteor addon",
-      },
-      { property: "og:title", content: "Argon Addon — Best Meteor Client Addon for DonutSMP" },
-      {
-        property: "og:description",
-        content:
-          "The only Meteor Client addon with a working fly bypass on DonutSMP. 90+ modules, free, open for review. Minecraft 1.21.11 Fabric.",
-      },
-      { property: "og:url", content: SITE_URL },
-      { property: "og:type", content: "website" },
-      { property: "og:image", content: `${SITE_URL}/og-card.png` },
-      { property: "og:image:type", content: "image/png" },
-      { property: "og:image:width", content: "1200" },
-      { property: "og:image:height", content: "630" },
-      {
-        property: "og:image:alt",
-        content:
-          "Argon Addon × DonutSMP — the only working DonutSMP fly bypass. Free Meteor Client addon.",
-      },
-      { name: "twitter:card", content: "summary_large_image" },
-      { name: "twitter:title", content: "Argon Addon — Best Meteor Client Addon for DonutSMP" },
-      {
-        name: "twitter:description",
-        content:
-          "Only working fly bypass on DonutSMP. 90+ Meteor modules. Free download for Minecraft 1.21.11.",
-      },
-      { name: "twitter:image", content: `${SITE_URL}/og-card.png` },
-    ],
-    links: [{ rel: "canonical", href: SITE_URL }],
-    scripts: [
-      {
-        type: "application/ld+json",
-        children: JSON.stringify({
-          "@context": "https://schema.org",
-          "@type": "SoftwareApplication",
-          name: "Argon Addon",
-          alternateName: [
-            "Argon Addon for DonutSMP",
-            "Argon Meteor Client Addon",
-            "Argon DonutSMP Addon",
-          ],
-          applicationCategory: "GameApplication",
-          applicationSubCategory: "Minecraft Mod",
-          operatingSystem: "Windows, macOS, Linux",
-          description:
-            "Meteor Client addon for DonutSMP and Minecraft 1.21.11 with a working fly bypass, 90+ modules for Crystal PvP, ESP, base finding, AH sniping, and automation.",
-          softwareVersion: "3.2.0",
-          downloadUrl: `${SITE_URL}${TRACKED_DOWNLOAD_URL}`,
-          installUrl: `${SITE_URL}/install`,
-          url: SITE_URL,
-          image: `${SITE_URL}/og-card.png`,
-          aggregateRating: {
-            "@type": "AggregateRating",
-            ratingValue: "4.9",
-            ratingCount: "2173",
-            bestRating: "5",
-          },
-          offers: { "@type": "Offer", price: "0", priceCurrency: "USD" },
-        }),
-      },
-      {
-        type: "application/ld+json",
-        children: JSON.stringify({
-          "@context": "https://schema.org",
-          "@type": "FAQPage",
-          mainEntity: faqsForSeo.map(([q, a]) => ({
-            "@type": "Question",
-            name: q,
-            acceptedAnswer: { "@type": "Answer", text: a },
-          })),
-        }),
-      },
-      {
-        type: "application/ld+json",
-        children: JSON.stringify({
-          "@context": "https://schema.org",
-          "@type": "BreadcrumbList",
-          itemListElement: [{ "@type": "ListItem", position: 1, name: "Home", item: SITE_URL }],
-        }),
-      },
-    ],
-  }),
+  head: () => {
+    const base = pageHead({
+      title: HOME_TITLE,
+      description: HOME_DESC,
+      path: "/",
+      keywords:
+        "argon addon, argon addon download, argon addon donutsmp, best addon donut smp, meteor client addons donutsmp, donutsmp fly bypass, meteor client donutsmp, argon meteor addon, argon addon free download",
+    });
+    return {
+      ...base,
+      links: [
+        ...base.links,
+        { rel: "preload", href: `${SITE_URL}/og-card.png`, as: "image" },
+      ],
+      scripts: [
+        jsonLdScript(softwareApplicationSchema()),
+        jsonLdScript(
+          webPageSchema("/", HOME_TITLE, HOME_DESC),
+        ),
+        jsonLdScript(faqSchema(faqsForSeo)),
+        jsonLdScript(breadcrumbSchema([{ name: "Home", path: "/" }])),
+        jsonLdScript(siteNavigationSchema()),
+      ],
+    };
+  },
 });
 
 const modulesData = [
@@ -227,11 +170,13 @@ function Hero() {
             v3.2.0 · 1.21.11 · Fly bypass live
           </div>
           <h1 className="reveal reveal-delay-1 mt-6 text-[2.6rem] font-bold leading-[1.05] tracking-tight md:text-6xl">
-            The <span className="text-gradient-brand">Meteor Client addon</span> DonutSMP players
-            actually use.
+            <span className="text-gradient-brand">Argon Addon download</span> — the Meteor Client
+            addon built for DonutSMP.
           </h1>
           <p className="reveal reveal-delay-2 mt-6 max-w-xl text-lg leading-relaxed text-muted-foreground">
-            Argon Addon ships the only{" "}
+            Looking for <strong className="font-semibold text-foreground">argon addon donutsmp</strong>{" "}
+            or the <strong className="font-semibold text-foreground">best addon donut smp</strong>{" "}
+            pick in 2026? Argon Addon ships the only{" "}
             <span className="font-semibold text-foreground">working fly bypass on DonutSMP</span>, a
             sub-110ms AH sniper, a stacked base-finder suite, and 90+ more modules — all in one free
             .jar. Drop it in your mods folder and press Right Shift.
@@ -356,7 +301,7 @@ function WhatIsArgon() {
       <div className="mx-auto max-w-4xl px-6">
         <div className="font-mono text-xs uppercase tracking-widest text-primary">What it is</div>
         <h2 className="mt-3 text-3xl font-bold tracking-tight md:text-4xl">
-          A Meteor Client addon, but actually maintained.
+          What is Argon Addon? (Meteor Client addons for DonutSMP)
         </h2>
         <div className="prose prose-invert mt-6 max-w-none space-y-5 text-[15px] leading-relaxed text-muted-foreground">
           <p>
@@ -928,6 +873,73 @@ function FAQ() {
   );
 }
 
+function SeoHubLinks() {
+  const links = [
+    { to: "/install" as const, label: "Argon Addon install guide", desc: "Fabric + Meteor + .jar in 5 minutes" },
+    {
+      to: "/donutsmp-fly-bypass" as const,
+      label: "DonutSMP fly bypass",
+      desc: "Only working fly on DonutSMP — settings & risks",
+    },
+    {
+      to: "/donutsmp-guide" as const,
+      label: "Argon Addon DonutSMP guide",
+      desc: "Full server + module walkthrough",
+    },
+    { to: "/modules" as const, label: "90+ Meteor Client modules", desc: "Searchable module catalogue" },
+    {
+      to: "/posts/best-meteor-client-addons-for-donutsmp" as const,
+      label: "Best meteor client addons donutsmp",
+      desc: "Ranked comparison for 2026",
+    },
+    {
+      to: "/posts/how-to-fly-on-donutsmp" as const,
+      label: "How to fly on DonutSMP",
+      desc: "Step-by-step fly tutorial",
+    },
+    {
+      to: "/posts/donutsmp-ah-sniper-guide" as const,
+      label: "DonutSMP AH sniper guide",
+      desc: "Auction house flip config",
+    },
+    {
+      to: "/posts/how-to-find-bases-on-donutsmp" as const,
+      label: "Find bases on DonutSMP",
+      desc: "ChunkFinder + StorageESP stack",
+    },
+  ];
+  return (
+    <section className="border-t border-border bg-card/30 py-16" aria-labelledby="seo-hub-heading">
+      <div className="mx-auto max-w-6xl px-6">
+        <h2 id="seo-hub-heading" className="text-2xl font-bold tracking-tight md:text-3xl">
+          Argon Addon download &amp; DonutSMP guides
+        </h2>
+        <p className="mt-3 max-w-3xl text-sm leading-relaxed text-muted-foreground">
+          Every page below targets a real search intent —{" "}
+          <span className="text-foreground">argon addon download</span>,{" "}
+          <span className="text-foreground">meteor client addons donutsmp</span>, fly bypass, AH
+          sniper, and base finding. Pick your path or grab the free .jar above.
+        </p>
+        <ul className="mt-8 grid gap-3 sm:grid-cols-2 lg:grid-cols-4">
+          {links.map((item) => (
+            <li key={item.to}>
+              <Link
+                to={item.to}
+                className="group block h-full rounded-xl border border-border bg-card p-4 transition hover:border-primary/50 hover:shadow-glow"
+              >
+                <span className="text-sm font-semibold text-foreground group-hover:text-primary">
+                  {item.label}
+                </span>
+                <span className="mt-1 block text-xs text-muted-foreground">{item.desc}</span>
+              </Link>
+            </li>
+          ))}
+        </ul>
+      </div>
+    </section>
+  );
+}
+
 function CTA() {
   return (
     <section className="py-20">
@@ -1357,6 +1369,7 @@ function Index() {
         <RecentActivity />
         <DownloadSection />
         <FAQ />
+        <SeoHubLinks />
         <CTA />
       </main>
       <SiteFooter />

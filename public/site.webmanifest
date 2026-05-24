@@ -1,0 +1,17 @@
+{
+  "name": "Argon Addon — Meteor Client Addon for DonutSMP",
+  "short_name": "Argon Addon",
+  "description": "Free Argon Addon download for DonutSMP. Working fly bypass and 90+ Meteor Client modules.",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#0d0809",
+  "theme_color": "#e63a2e",
+  "lang": "en",
+  "icons": [
+    {
+      "src": "/favicon.png",
+      "sizes": "1024x1024",
+      "type": "image/png"
+    }
+  ]
+}
