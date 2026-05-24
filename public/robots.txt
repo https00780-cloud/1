@@ -1,0 +1,8 @@
+User-agent: *
+Allow: /
+
+# Internal fixture used for OG image generation — not user-facing
+Disallow: /_og-card.html
+
+Sitemap: https://argonaddon.com/sitemap.xml
+Host: https://argonaddon.com
